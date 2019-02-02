@@ -3,8 +3,10 @@ set -euo pipefail; IFS=$'\n\t'
 
 cat <<EOF >~/.my.cnf
 [mysqldump]
+host=mysql
 user=$DB_USERNAME
 password=$DB_PASSWORD
+single-transaction
 EOF
 
 touch /tmp/log

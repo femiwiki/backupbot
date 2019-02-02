@@ -1,0 +1,12 @@
+#!/bin/bash
+set -euo pipefail; IFS=$'\n\t'
+
+cat <<EOF >~/.my.cnf
+[mysqldump]
+user=$DB_USERNAME
+password=$DB_PASSWORD
+EOF
+
+touch /tmp/log
+cron
+tail -f /tmp/log

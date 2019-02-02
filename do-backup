@@ -3,8 +3,11 @@ set -euo pipefail; IFS=$'\n\t'
 
 FILE=$(date --iso-8601=minutes)-mysql-backup.sql.gz
 
-# Dump database and compress
+# Dump and compress database
 nice -n 19 mysqldump --compress --single-transaction femiwiki | nice -n 19 gzip -9 > "a/$FILE"
 
-# Upload compressed file to AWS S3
+# Upload backup file to AWS S3
 aws s3 cp "a/$FILE" s3://femiwiki-backups
+
+# Remove backup file
+rm "a/$FILE"

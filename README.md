@@ -1,6 +1,6 @@
-[backupbot] [![Docker Badge]][Docker Hub]
+backupbot [![Docker Badge]][Docker Hub]
 ========
-주기적으로 로컬호스트의 [MySQL을] 덤프하여 [AWS S3]에 업로드합니다.
+주기적으로 로컬호스트의 [MySQL]을 덤프하여 [AWS S3]에 업로드합니다.
 
 ```bash
 docker run --detach \

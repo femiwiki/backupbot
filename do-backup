@@ -6,4 +6,4 @@ FILE_NAME=$(date --iso-8601=minutes).sql.gz
 # Dump and compress database, Upload backup file to AWS S3
 nice -n 19 mysqldump --compress --single-transaction femiwiki |
   nice -n 19 gzip -9 |
-  nice -n 19 /usr/local/bin/aws s3 cp - "s3://femiwiki-backups/mysql/${FILE_NAME}" --storage-class STANDARD_IA
+  nice -n 19 /usr/local/bin/aws s3 cp - "s3://femiwiki-backups/mysql/${FILE_NAME}"

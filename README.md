@@ -32,8 +32,8 @@ The source code of *backupbot* is primarily distributed under the terms of
 the [GNU Affero General Public License v3.0] or any later version. See
 [COPYRIGHT] for details.
 
-[Docker Badge]: https://badgen.net/docker/pulls/femiwiki/backupbot?icon=docker&label=pulls
-[Docker Hub]: https://hub.docker.com/r/femiwiki/backupbot/
+[Docker Badge]: https://badgen.net/badge/icon/docker?icon=docker&label
+[Docker Hub]: https://github.com/orgs/femiwiki/packages/container/backupbot
 [MySQL]: https://www.mysql.com/
 [AWS S3]: https://aws.amazon.com/s3/
 [페미위키]: https://femiwiki.com

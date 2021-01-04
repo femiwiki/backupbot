@@ -15,7 +15,7 @@ docker run --detach \
 백업 파일의 사용 방법
 --------
 
-https://github.com/femiwiki/mediawiki/blob/master/README.md 등의 설명에 따라 미디어위키를 실행한 후 [Restoring a wiki from backup](https://www.mediawiki.org/wiki/Manual:Restoring_a_wiki_from_backup) 메뉴얼을 따릅니다. 예를 들어 mysql 콘테이너에 백업 파일을 복사한 후 다음 커맨드를 실행합니다.
+https://github.com/femiwiki/docker-mediawiki/blob/main/README.md 등의 설명에 따라 미디어위키를 실행한 후 [Restoring a wiki from backup](https://www.mediawiki.org/wiki/Manual:Restoring_a_wiki_from_backup) 메뉴얼을 따릅니다. 예를 들어 mysql 콘테이너에 백업 파일을 복사한 후 다음 커맨드를 실행합니다.
 
 ```sh
 mysql -uDB_USERNAME -pDB_PASSWORD < dump_of_wikidb.sql #DB_USERNAME과 DB_PASSWORD

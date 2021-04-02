@@ -23,6 +23,9 @@ RUN apt-get update && apt-get -y install cron
 COPY crontab .
 RUN crontab crontab && rm crontab
 
+# Install php
+RUN apt-get update && apt-get install -y php-cli
+
 # Install python
 RUN apt-get update && apt-get install -y python3-pip
 
@@ -31,6 +34,6 @@ RUN python3 -m pip install --upgrade pip &&\
     python3 -m pip install awscli
 
 # Copy scripts
-COPY do-backup docker-cmd ./
+COPY do-backup docker-cmd /usr/local/bin/
 
-CMD ["/a/docker-cmd"]
+CMD ["/usr/local/bin/docker-cmd"]

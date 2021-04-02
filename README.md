@@ -1,41 +1,55 @@
-backupbot [![Docker Badge]][Docker Hub]
-========
-주기적으로 [MySQL]을 덤프하여 [AWS S3]에 업로드합니다.
+# backupbot [![Docker Badge]][docker hub]
+
+A Docker image for dumping [MySQL] that contains [MediaWiki] data and uploading to [AWS S3] periodically. This image is designed for [FemiWiki].
 
 ```bash
+# Configuring network is required
+
+# Passing username and password as environment variables
 docker run --detach \
   --name backupbot \
   --restart always \
   -e 'DB_USERNAME=xxxxxxxx' \
   -e 'DB_PASSWORD=xxxxxxxx' \
   femiwiki/backupbot
-# 추가적인 네트워크 설정이 필요합니다.
+
+# Alternatively, you can provide LocalSettings.php instead
+docker run --detach \
+  --name backupbot \
+  --restart always \
+  -v $PWD/LocalSettings.php:/a/LocalSettings.php \
+  femiwiki/backupbot
 ```
 
-백업 파일의 사용 방법
---------
+## Environment variables
 
-https://github.com/femiwiki/docker-mediawiki/blob/main/README.md 등의 설명에 따라 미디어위키를 실행한 후 [Restoring a wiki from backup](https://www.mediawiki.org/wiki/Manual:Restoring_a_wiki_from_backup) 메뉴얼을 따릅니다. 예를 들어 mysql 콘테이너에 백업 파일을 복사한 후 다음 커맨드를 실행합니다.
+- `DB_USERNAME`: The user name passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
+- `DB_PASSWORD`: The password passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
+
+## Restoring a wiki from backup
 
 ```sh
-mysql -uDB_USERNAME -pDB_PASSWORD < dump_of_wikidb.sql #DB_USERNAME과 DB_PASSWORD
+# Replace DB_USERNAME and DB_PASSWORD with actual values
+mysql -uDB_USERNAME -pDB_PASSWORD < dump_of_wikidb.sql
 ```
 
-이후 필요에 따라 [rebuildall.php](https://www.mediawiki.org/wiki/Manual:Rebuildall.php)와 같은 스크립트를 실행합니다.
-
+Run [rebuildall.php](https://www.mediawiki.org/wiki/Manual:Rebuildall.php) script.
+See [Restoring a wiki from backup](https://www.mediawiki.org/wiki/Manual:Restoring_a_wiki_from_backup) for details.
 
 &nbsp;
 
---------
+---
 
-The source code of *backupbot* is primarily distributed under the terms of
+The source code of _backupbot_ is primarily distributed under the terms of
 the [GNU Affero General Public License v3.0] or any later version. See
 [COPYRIGHT] for details.
 
-[Docker Badge]: https://badgen.net/badge/icon/docker?icon=docker&label
-[Docker Hub]: https://github.com/orgs/femiwiki/packages/container/backupbot
-[MySQL]: https://www.mysql.com/
-[AWS S3]: https://aws.amazon.com/s3/
-[페미위키]: https://femiwiki.com
-[GNU Affero General Public License v3.0]: LICENSE
-[COPYRIGHT]: COPYRIGHT
+[docker badge]: https://badgen.net/badge/icon/docker?icon=docker&label
+[docker hub]: https://github.com/orgs/femiwiki/packages/container/backupbot
+[mysql]: https://www.mysql.com/
+[mediawiki]: https://www.mediawiki.org/
+[femiwiki]: https://femiwiki.com
+[localsettings.php]: https://www.mediawiki.org/wiki/Manual:LocalSettings.php
+[aws s3]: https://aws.amazon.com/s3/
+[gnu affero general public license v3.0]: LICENSE
+[copyright]: COPYRIGHT

@@ -1,7 +1,14 @@
 #!/bin/bash
 set -euo pipefail; IFS=$'\n\t'
 
-cat <<EOF >~/.my.cnf
+if [ -f /a/LocalSettings.php ]; then
+  DB_USERNAME="$(php -r 'require "/a/LocalSettings.php"; echo $wgDBuser;')"
+  DB_PASSWORD="$(php -r 'require "/a/LocalSettings.php"; echo $wgDBpassword;')"
+fi
+
+echo "Use $DB_USERNAME user"
+
+cat <<EOF >/root/.my.cnf
 [mysqldump]
 protocol=TCP
 user=$DB_USERNAME

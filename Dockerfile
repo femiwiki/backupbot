@@ -1,7 +1,7 @@
 #
 # Build
 #
-FROM mysql:8
+FROM --platform=$TARGETPLATFORM debian:buster-slim
 
 WORKDIR /a
 
@@ -12,9 +12,12 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Add Tini
 # See https://github.com/krallin/tini for the further details
 ENV TINI_VERSION v0.18.0
-ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /tini
+RUN curl -sLfo /tini https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETPLATFORM | cut -d/ -f2}
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
+
+# Install MySQL shell
+RUN apt-get update && apt-get -y install mysql-shell
 
 # Install cron
 RUN apt-get update && apt-get -y install cron

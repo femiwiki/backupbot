@@ -28,12 +28,12 @@ RUN crontab crontab && rm crontab
 # Install php
 RUN yum install -y php-cli
 
-# Install python
-RUN yum install -y python3-pip
-
 # Install AWS CLI
-RUN python3 -m pip install --upgrade pip &&\
-    python3 -m pip install awscli
+RUN yum install -y unzip
+RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\
+    unzip awscli.zip &&\
+    ./aws/install &&\
+    rm -rf awscli ./aws
 
 # Copy scripts
 COPY do-backup docker-cmd /usr/local/bin/

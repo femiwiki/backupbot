@@ -12,7 +12,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # Add Tini
 # See https://github.com/krallin/tini for the further details
 ENV TINI_VERSION v0.18.0
-RUN curl -sLfo /tini https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETPLATFORM | cut -d/ -f2}
+RUN curl -sLfo /tini "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETPLATFORM | cut -d/ -f2}"
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 

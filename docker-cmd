@@ -18,5 +18,5 @@ single-transaction
 EOF
 
 touch /tmp/log
-cron
+crond
 tail -f /tmp/log

@@ -1,7 +1,4 @@
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 env:
   IMAGE_NAME: backupbot
@@ -35,7 +32,7 @@ jobs:
         with:
           cache-from: ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest
           platforms: linux/amd64,linux/arm64
-          push: ${{ github.repository_owner == 'femiwiki' }}
+          push: ${{ github.repository_owner == 'femiwiki' && github.ref == 'refs/heads/main' }}
           tags: |
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
             ghcr.io/${{ github.repository_owner }}/${{ env.IMAGE_NAME }}:latest

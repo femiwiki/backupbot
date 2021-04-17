@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-      - buildx-test
 
 env:
   IMAGE_NAME: backupbot

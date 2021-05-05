@@ -19,21 +19,23 @@ RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
 # Install cron
-RUN yum install -y cronie
+RUN microdnf install -y cronie
 
 # Register a cronjob
 COPY crontab .
 RUN crontab crontab && rm crontab
 
 # Install php
-RUN yum install -y php-cli
+RUN microdnf install -y php-cli
 
 # Install AWS CLI
-RUN yum install -y unzip
+RUN microdnf install -y unzip
 RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\
     unzip awscli.zip &&\
     ./aws/install &&\
     rm -rf awscli ./aws
+
+RUN microdnf clean all
 
 # Copy scripts
 COPY do-backup docker-cmd /usr/local/bin/

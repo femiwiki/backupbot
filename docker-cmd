@@ -1,8 +1,11 @@
 #!/bin/bash
 set -euo pipefail; IFS=$'\n\t'
 
+DB_SERVER="localhost"
+
 export LOCAL_SETTINGS="${LOCAL_SETTINGS:-/a/LocalSettings.php}"
 if [ ! -z "$LOCAL_SETTINGS" ]; then
+  DB_SERVER="$(php -r 'require getenv("LOCAL_SETTINGS"); echo $wgDBserver;')"
   DB_USERNAME="$(php -r 'require getenv("LOCAL_SETTINGS"); echo $wgDBuser;')"
   DB_PASSWORD="$(php -r 'require getenv("LOCAL_SETTINGS"); echo $wgDBpassword;')"
 fi
@@ -12,6 +15,7 @@ echo "Use $DB_USERNAME user"
 cat <<EOF >/root/.my.cnf
 [mysqldump]
 protocol=TCP
+host=$DB_SERVER
 user=$DB_USERNAME
 password=$DB_PASSWORD
 single-transaction

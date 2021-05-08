@@ -26,7 +26,7 @@ docker run --detach \
 - `DB_SERVER`: The user name passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored. Default to `localhost`.
 - `DB_USERNAME`: The user name passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
 - `DB_PASSWORD`: The password passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
-- `LOCAL_SETTINGS`: The absolute path to LocalSettings.php that declares `$wgDBuser` and `$wgDBpassword`. Default to `/a/LocalSettings.php`.
+- `LOCAL_SETTINGS`: The absolute path to LocalSettings.php that declares `$wgDBserver`, `$wgDBuser` and `$wgDBpassword`. Default to `/a/LocalSettings.php`.
 
 ## Restoring a wiki from backup
 

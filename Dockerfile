@@ -1,7 +1,7 @@
 #
 # Build
 #
-FROM --platform=$TARGETPLATFORM mysql/mysql-server:8.0.25
+FROM --platform=$TARGETPLATFORM mysql/mysql-server:8.0.26
 ARG TARGETPLATFORM
 
 WORKDIR /a

@@ -33,7 +33,7 @@ RUN microdnf install -y unzip
 RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\
     unzip awscli.zip &&\
     ./aws/install &&\
-    rm -rf awscli ./aws
+    rm -rf awscli.zip awscli ./aws
 
 RUN microdnf clean all
 

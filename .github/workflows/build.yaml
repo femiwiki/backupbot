@@ -5,7 +5,7 @@ env:
 
 jobs:
   docker_image_job:
-    runs-on: ubuntu-18.04
+    runs-on: ubuntu-latest
     steps:
       # don't need to use the actions/checkout when using setup-buildx-action
 

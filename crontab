@@ -1,1 +1,0 @@
-0 6 * * * /usr/local/bin/do-backup >> /tmp/log 2>&1

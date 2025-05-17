@@ -18,13 +18,6 @@ RUN PLATFORM="$(echo $TARGETPLATFORM | cut -d/ -f2)" &&\
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
-# Install cron
-RUN microdnf install -y cronie
-
-# Register a cronjob
-COPY crontab .
-RUN crontab crontab && rm crontab
-
 # Install php
 RUN microdnf install -y php-cli
 
@@ -38,6 +31,6 @@ RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname
 RUN microdnf clean all
 
 # Copy scripts
-COPY do-backup docker-cmd /usr/local/bin/
+COPY docker-cmd /usr/local/bin/
 
 CMD ["/usr/local/bin/docker-cmd"]

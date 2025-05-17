@@ -21,6 +21,19 @@ password=$DB_PASSWORD
 single-transaction
 EOF
 
-touch /tmp/log
-crond
-tail -f /tmp/log
+FILE_NAME=$(date --iso-8601=minutes).sql.gz
+
+# Dumps and compresses database, uploads backup file to AWS S3
+
+for i in {1..5}; do
+  echo "Trying to dump and compress... $i/5"
+  nice -n 19 mysqldump --compress --single-transaction femiwiki |
+    nice -n 19 gzip -9 > $FILE_NAME &&\
+    break || sleep 15
+done
+
+for i in {1..5}; do
+  echo "Trying to upload... $i/5"
+  nice -n 19 /usr/local/bin/aws s3 cp $FILE_NAME "s3://femiwiki-backups/mysql/${FILE_NAME}" &&\
+    break || sleep 15
+done

@@ -18,6 +18,8 @@ RUN PLATFORM="$(echo $TARGETPLATFORM | cut -d/ -f2)" &&\
 RUN chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
+RUN microdnf install -y gzip
+
 # Install php
 RUN microdnf install -y php-cli
 

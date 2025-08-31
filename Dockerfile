@@ -24,9 +24,6 @@ RUN microdnf install -y gzip cronie
 COPY crontab .
 RUN crontab crontab && rm crontab
 
-# Install php
-RUN microdnf install -y php-cli
-
 # Install AWS CLI
 RUN microdnf install -y unzip
 RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\

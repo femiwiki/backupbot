@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail; IFS=$'\n\t'
 
+# Secrets come from SSM Parameter Store in production, through the instance
+# role. Other runs pass them as plain env and leave SSM_SECRETS unset.
+if [ -n "${SSM_SECRETS:-}" ]; then
+  DB_USERNAME="$(/usr/local/bin/aws ssm get-parameter --name /mysql/users/mediawiki/username --query Parameter.Value --output text)"
+  DB_PASSWORD="$(/usr/local/bin/aws ssm get-parameter --with-decryption --name /mysql/users/mediawiki/password --query Parameter.Value --output text)"
+fi
+
 echo "Use $DB_USERNAME user"
 
 cat <<EOF >/root/.my.cnf

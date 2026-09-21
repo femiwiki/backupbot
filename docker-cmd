@@ -10,10 +10,20 @@ fi
 
 echo "Use $DB_USERNAME user"
 
+# The client options take the host and the port apart. DB_SERVER carries them
+# together, the way MediaWiki writes $wgDBserver.
+DB_SERVER="${DB_SERVER:-localhost}"
+DB_HOST="${DB_SERVER%%:*}"
+DB_PORT="${DB_SERVER##*:}"
+if [ "$DB_PORT" = "$DB_SERVER" ]; then
+  DB_PORT=3306
+fi
+
 cat <<EOF >/root/.my.cnf
 [mysqldump]
 protocol=TCP
-host=$DB_SERVER
+host=$DB_HOST
+port=$DB_PORT
 user=$DB_USERNAME
 password=$DB_PASSWORD
 single-transaction

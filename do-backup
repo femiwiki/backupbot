@@ -7,15 +7,30 @@ FILE_NAME=$(date --iso-8601=minutes).sql.gz
 
 for i in {1..5}; do
   echo "Trying to dump and compress... $i/5"
-  nice -n 19 mysqldump --single-transaction femiwiki |
-    nice -n 19 gzip -9 > $FILE_NAME &&\
-    break || sleep 15
+  if nice -n 19 mysqldump --single-transaction femiwiki |
+    nice -n 19 gzip -9 >"$FILE_NAME"; then
+    break
+  fi
+  sleep 15
 done
+
+# mysqldump closes a whole dump with a "-- Dump completed" line. An empty or a
+# cut off file has none, and uploading it would hide the failure.
+if ! nice -n 19 gzip -dc "$FILE_NAME" | tail -n 1 | grep -q '^-- Dump completed'; then
+  echo "The dump is empty or incomplete, so it is not uploaded" >&2
+  rm -f "$FILE_NAME"
+  exit 1
+fi
 
 for i in {1..5}; do
   echo "Trying to upload... $i/5"
-  nice -n 19 /usr/local/bin/aws s3 cp $FILE_NAME "s3://femiwiki-backups/mysql/${FILE_NAME}" &&\
-    break || sleep 15
+  if nice -n 19 /usr/local/bin/aws s3 cp "$FILE_NAME" "s3://femiwiki-backups/mysql/${FILE_NAME}"; then
+    rm "$FILE_NAME"
+    exit 0
+  fi
+  sleep 15
 done
 
-rm $FILE_NAME
+echo "The dump could not be uploaded" >&2
+rm -f "$FILE_NAME"
+exit 1

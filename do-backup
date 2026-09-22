@@ -3,6 +3,34 @@ set -euo pipefail; IFS=$'\n\t'
 
 FILE_NAME=$(date --iso-8601=minutes).sql.gz
 
+# A whole dump of this database compresses to a little over 900 MiB. A floor at
+# roughly half of that rejects an empty or a cut off file while leaving room for
+# ordinary growth and for a large deletion.
+MINIMUM_BYTES=$((500 * 1024 * 1024))
+
+# Healthchecks.io expects one ping a day and warns when it does not arrive, so a
+# missed backup is noticed without anything of ours having to be alive to notice
+# it. cron hands the job a bare environment, so docker-cmd leaves the URL in a
+# file the way it leaves the database credentials in .my.cnf.
+PING_URL_FILE=/root/.healthcheck-url
+
+ping() {
+  if [ ! -s "$PING_URL_FILE" ]; then
+    return 0
+  fi
+  curl -fsS -m 10 --retry 5 -o /dev/null "$(cat "$PING_URL_FILE")${1:-}" || true
+}
+
+report() {
+  local status=$?
+  if [ "$status" -eq 0 ]; then
+    ping
+  else
+    ping /fail
+  fi
+}
+trap report EXIT
+
 # Dumps and compresses database, uploads backup file to AWS S3
 
 for i in {1..5}; do
@@ -13,6 +41,15 @@ for i in {1..5}; do
   fi
   sleep 15
 done
+
+# A year of 20 byte gzips went up unnoticed because nothing looked at how big
+# the file was.
+DUMP_BYTES=$(stat -c %s "$FILE_NAME")
+if [ "$DUMP_BYTES" -lt "$MINIMUM_BYTES" ]; then
+  echo "The dump is $DUMP_BYTES bytes, too small to be the whole database, so it is not uploaded" >&2
+  rm -f "$FILE_NAME"
+  exit 1
+fi
 
 # mysqldump closes a whole dump with a "-- Dump completed" line. An empty or a
 # cut off file has none, and uploading it would hide the failure.

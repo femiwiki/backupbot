@@ -6,6 +6,9 @@ set -euo pipefail; IFS=$'\n\t'
 if [ -n "${SSM_SECRETS:-}" ]; then
   DB_USERNAME="$(/usr/local/bin/aws ssm get-parameter --name /mysql/users/mediawiki/username --query Parameter.Value --output text)"
   DB_PASSWORD="$(/usr/local/bin/aws ssm get-parameter --with-decryption --name /mysql/users/mediawiki/password --query Parameter.Value --output text)"
+  # A backup still runs without the ping URL, so a missing parameter logs the
+  # error and lets the container come up rather than stopping the backups.
+  HEALTHCHECK_URL="$(/usr/local/bin/aws ssm get-parameter --with-decryption --name /mysql/backup/healthcheck-url --query Parameter.Value --output text || true)"
 fi
 
 echo "Use $DB_USERNAME user"
@@ -28,6 +31,13 @@ user=$DB_USERNAME
 password=$DB_PASSWORD
 single-transaction
 EOF
+
+# cron hands the job a bare environment, so the ping URL goes to a file the same
+# way the credentials above go to .my.cnf.
+if [ -n "${HEALTHCHECK_URL:-}" ]; then
+  printf '%s' "$HEALTHCHECK_URL" >/root/.healthcheck-url
+  chmod 600 /root/.healthcheck-url
+fi
 
 touch /tmp/log
 crond

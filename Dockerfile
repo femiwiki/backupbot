@@ -39,9 +39,9 @@ COPY do-backup docker-cmd /usr/local/bin/
 # The base image checks a local mysqld, which this container does not run, so
 # the check fails whether a backup succeeded or not. Nothing acts on the
 # status either: Docker does not restart an unhealthy container outside Swarm.
-# Whether a dump of the right size reached S3 is read from these logs by the
-# Backup stale alert, which is the question worth asking about a job that runs
-# once a day.
+# Whether a dump of the right size reached S3 is do-backup's own ping to a dead
+# man's switch, which is the question worth asking about a job that runs once a
+# day.
 HEALTHCHECK NONE
 
 CMD ["/usr/local/bin/docker-cmd"]

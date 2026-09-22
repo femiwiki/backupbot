@@ -27,6 +27,7 @@ docker run --detach \
 - `DB_USERNAME`: The user name passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
 - `DB_PASSWORD`: The password passed to access the database. If `/a/LocalSettings.php` is exist, this will be ignored.
 - `LOCAL_SETTINGS`: The absolute path to LocalSettings.php that declares `$wgDBserver`, `$wgDBuser` and `$wgDBpassword`. Default to `/a/LocalSettings.php`.
+- `HEALTHCHECK_URL`: A [Healthchecks.io] ping URL. It is pinged once a dump of a plausible size has reached S3, and `$HEALTHCHECK_URL/fail` is pinged when a run ends any other way, so a missed backup is noticed without anyone reading the logs. If `SSM_SECRETS` is set, the URL is read from the `/mysql/backup/healthcheck-url` parameter instead. Nothing is pinged when neither is given.
 
 ## Restoring a wiki from backup
 
@@ -53,5 +54,6 @@ the [GNU Affero General Public License v3.0] or any later version. See
 [femiwiki]: https://femiwiki.com
 [localsettings.php]: https://www.mediawiki.org/wiki/Manual:LocalSettings.php
 [aws s3]: https://aws.amazon.com/s3/
+[healthchecks.io]: https://healthchecks.io
 [gnu affero general public license v3.0]: LICENSE
 [copyright]: COPYRIGHT

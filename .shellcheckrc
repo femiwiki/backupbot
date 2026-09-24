@@ -1,0 +1,2 @@
+# do-backup calls its functions through trap, which shellcheck does not follow.
+disable=SC2329

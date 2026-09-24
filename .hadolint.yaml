@@ -1,8 +1,5 @@
 ---
 ignored:
-  # The only pipe is inside a command substitution, where pipefail would not
-  # reach anyway.
-  - DL4006
   # microdnf clean all runs in its own layer after the installs.
   - DL3040
   # The packages follow the pinned base image's repository.

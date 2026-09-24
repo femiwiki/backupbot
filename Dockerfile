@@ -2,7 +2,6 @@
 # Build
 #
 FROM --platform=$TARGETPLATFORM mysql/mysql-server:8.0.32
-ARG TARGETPLATFORM
 
 WORKDIR /a
 
@@ -10,13 +9,9 @@ WORKDIR /a
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Add Tini
-# See https://github.com/krallin/tini for the further details
-ENV TINI_VERSION v0.18.0
-RUN PLATFORM="$(echo $TARGETPLATFORM | cut -d/ -f2)" &&\
-    curl -sLfo /tini "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${PLATFORM}"
-RUN chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+# The base image's entrypoint starts mysqld. Run with Docker's --init, which
+# reaps orphans and forwards signals to docker-cmd.
+ENTRYPOINT []
 
 RUN microdnf install -y gzip cronie
 

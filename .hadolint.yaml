@@ -4,6 +4,3 @@ ignored:
   - DL3040
   # The packages follow the pinned base image's repository.
   - DL3041
-  # Spelling out the default --platform=$TARGETPLATFORM changes nothing, and the
-  # Dockerfile stays as it is so this does not rebuild the image.
-  - DL3065

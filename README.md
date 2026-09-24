@@ -52,7 +52,6 @@ the [GNU Affero General Public License v3.0] or any later version. See
 [mysql]: https://www.mysql.com/
 [mediawiki]: https://www.mediawiki.org/
 [femiwiki]: https://femiwiki.com
-[localsettings.php]: https://www.mediawiki.org/wiki/Manual:LocalSettings.php
 [aws s3]: https://aws.amazon.com/s3/
 [healthchecks.io]: https://healthchecks.io
 [gnu affero general public license v3.0]: LICENSE

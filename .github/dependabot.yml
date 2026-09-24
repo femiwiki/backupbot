@@ -8,6 +8,13 @@ updates:
     reviewers:
       - 'femiwiki/reviewer'
 
+  - package-ecosystem: "uv"
+    directory: "/"
+    schedule:
+      interval: monthly
+    reviewers:
+      - 'femiwiki/reviewer'
+
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:

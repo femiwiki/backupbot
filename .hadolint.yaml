@@ -1,4 +1,0 @@
----
-ignored:
-  # The packages follow the pinned base image's repository.
-  - DL3041

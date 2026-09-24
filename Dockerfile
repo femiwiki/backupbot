@@ -2,7 +2,6 @@
 # Build
 #
 FROM mysql/mysql-server:8.0.32
-ARG TARGETARCH
 
 WORKDIR /a
 
@@ -10,12 +9,9 @@ WORKDIR /a
 ENV TZ=Asia/Seoul
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-# Add Tini
-# See https://github.com/krallin/tini for the further details
-ENV TINI_VERSION v0.18.0
-RUN curl -sLfo /tini "https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini-${TARGETARCH}" &&\
-    chmod +x /tini
-ENTRYPOINT ["/tini", "--"]
+# The base image's entrypoint starts mysqld. Run with Docker's --init, which
+# reaps orphans and forwards signals to docker-cmd.
+ENTRYPOINT []
 
 RUN microdnf install -y gzip-1.9-15.el8_10 cronie-1.5.2-10.el8 && microdnf clean all
 

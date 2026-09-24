@@ -1,6 +1,4 @@
 ---
 ignored:
-  # microdnf clean all runs in its own layer after the installs.
-  - DL3040
   # The packages follow the pinned base image's repository.
   - DL3041

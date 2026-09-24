@@ -13,20 +13,18 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 # reaps orphans and forwards signals to docker-cmd.
 ENTRYPOINT []
 
-RUN microdnf install -y gzip cronie
+RUN microdnf install -y gzip cronie && microdnf clean all
 
 # Register a cronjob
 COPY crontab .
 RUN crontab crontab && rm crontab
 
 # Install AWS CLI
-RUN microdnf install -y unzip
+RUN microdnf install -y unzip && microdnf clean all
 RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\
     unzip awscli.zip &&\
     ./aws/install &&\
     rm -rf awscli.zip awscli ./aws
-
-RUN microdnf clean all
 
 # Copy scripts
 COPY do-backup docker-cmd /usr/local/bin/

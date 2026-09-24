@@ -17,14 +17,14 @@ RUN curl -sLfo /tini "https://github.com/krallin/tini/releases/download/${TINI_V
     chmod +x /tini
 ENTRYPOINT ["/tini", "--"]
 
-RUN microdnf install -y gzip cronie && microdnf clean all
+RUN microdnf install -y gzip-1.9-15.el8_10 cronie-1.5.2-10.el8 && microdnf clean all
 
 # Register a cronjob
 COPY crontab .
 RUN crontab crontab && rm crontab
 
 # Install AWS CLI
-RUN microdnf install -y unzip && microdnf clean all
+RUN microdnf install -y unzip-6.0-48.0.1.el8_10 && microdnf clean all
 RUN curl -sLfo awscli.zip "https://awscli.amazonaws.com/awscli-exe-linux-$(uname -p).zip" &&\
     unzip awscli.zip &&\
     ./aws/install &&\

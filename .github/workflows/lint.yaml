@@ -52,18 +52,16 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
+      checks: write
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0  # v7.0.0
         with:
           persist-credentials: false
 
-      - env:
-          VERSION: 1.7.12
-        run: |
-          base=https://github.com/rhysd/actionlint/releases/download
-          curl -fsSL "$base/v${VERSION}/actionlint_${VERSION}_linux_amd64.tar.gz" | tar -xz actionlint
-
-      - run: ./actionlint -color
+      - uses: reviewdog/action-actionlint@2085657ab2c7f48c58edcc767fba576f63bea76b  # v1.77.0
+        with:
+          reporter: github-check
+          fail_level: error
 
   shellcheck:
     runs-on: ubuntu-latest

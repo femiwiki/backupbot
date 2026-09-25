@@ -1,0 +1,3 @@
+# do-backup calls its functions through trap, which shellcheck does not follow.
+# Older shellcheck reports that as SC2317 and newer as SC2329.
+disable=SC2317,SC2329
